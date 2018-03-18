@@ -1,9 +1,12 @@
 /**
-  * Controlando câmera NewLink Sport Mini
+ * Controlando câmera NewLink Sport Mini
+ * 
+ * O script liga a câmera, troca para modo desejado
+ * e tira uma foto a cada aproximadamente, 64 segundos.
  */
-#define pinoFoto  9
-#define pinoForca 8
-#define pinoModo  7
+#define PINO_FOTO  2
+#define PINO_FORCA 3
+#define PINO_MODO  4
 
 /**
  * Modo da câmera 
@@ -17,17 +20,15 @@
 
 boolean ligado;
 boolean onCam;
-int contador;
 
 void setup() {
   Serial.begin(9600);
 
-  pinMode(pinoForca, OUTPUT);
-  pinMode(pinoFoto, OUTPUT);
-  pinMode(pinoModo, OUTPUT);
+  pinMode(PINO_FORCA, OUTPUT);
+  pinMode(PINO_FOTO, OUTPUT);
+  pinMode(PINO_MODO, OUTPUT);
 
   ligado = false;
-  contador = 0;
   onCam = false;
 }
 
@@ -37,51 +38,53 @@ void loop() {
 
   // tirando a foto e desligando
   tiraFoto();
-
-  for (int t = 0; t <= 6; t++) {
-    delay(4000);
-  }
-  
-  contador++;
 }
 
 void startCam() {
   if (ligado == false) {
     Serial.println("ligando");
     
-    digitalWrite(pinoForca, HIGH);
-    delay(2000);
+    digitalWrite(PINO_FORCA, HIGH);
+    delay(1000);
     
-    digitalWrite(pinoForca, LOW);
+    digitalWrite(PINO_FORCA, LOW);
     delay(1000);
 
-    ligado = true;
-    contador = 0;
-
     for (int i = 1; i <= MODO_CAMERA; i++) {
-      digitalWrite(pinoModo, HIGH);
+      digitalWrite(PINO_MODO, HIGH);
       delay(1000);
       
-      digitalWrite(pinoModo, LOW);
+      digitalWrite(PINO_MODO, LOW);
       delay(1000);
   
       if (i == MODO_CAMERA) onCam = true;
     }
+
+    ligado = true;
   }
 }
 
-
 void tiraFoto() {
-  if (ligado == true && contador == 10 && onCam == true) {
+  if (ligado == true && onCam == true) {
     Serial.println("tirando foto");
 
-    digitalWrite(pinoFoto, HIGH);
-    delay(2000);
+    digitalWrite(PINO_FOTO, HIGH);
+    delay(1000);
     
-    digitalWrite(pinoFoto, LOW);
-    delay(2000);
+    digitalWrite(PINO_FOTO, LOW);
+    delay(1000);
 
-    contador = 0;
+    // long delay
+    geraIntervalo();
   }
+}
+
+void geraIntervalo() {
+  for (int t = 0; t <= 7; t++) {
+    Serial.print('.');
+    delay(8000);
+  }
+  
+  Serial.println();
 }
 
