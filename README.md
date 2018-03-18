@@ -13,7 +13,7 @@ Controle da câmera **NewLink - Sport Mini** via Arduino.
 
 ## Montagem
 
-- Abra a câmera, e solde um fio em cada lado dos _push buttons_ de cada função, ou seja, cada função terão dois fios soldados para fechar contato
+- Abra a câmera, e solde um fio em cada lado dos _push buttons_ de cada função, ou seja, cada função terão dois fios soldados para fechar contato. Não esqueça de remover também a bateria e também soldar dois fios no lugar da conexão. A bateria não será mais necessária, visto que o próprio Arduino poderá fornecer energia para a câmera.
 
 ![circuito 01](assets/20180318_032941.jpg)
 ![circuito 02](assets/20180318_033114.jpg)
