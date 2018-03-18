@@ -3,6 +3,8 @@
  * 
  * O script liga a câmera, troca para modo desejado
  * e tira uma foto a cada aproximadamente, 64 segundos.
+ * 
+ * @author Thiago Paes <mrprompt@gmail.com>
  */
 #define PINO_FOTO  2
 #define PINO_FORCA 3
