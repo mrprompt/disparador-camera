@@ -9,7 +9,7 @@
 #define PINO_FOTO  2
 #define PINO_FORCA 3
 #define PINO_MODO  4
-#define INTERVALO_FOTO  60000 
+#define INTERVALO_FOTO  60000 // uma foto por minuto
 #define MODO_CAMERA 4
 
 boolean ligado;
@@ -31,6 +31,8 @@ void setup() {
 void loop() {
   startCam();
   tiraFoto();
+
+  delay(1000);
 }
 
 /**
