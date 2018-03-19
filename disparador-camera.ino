@@ -9,19 +9,12 @@
 #define PINO_FOTO  2
 #define PINO_FORCA 3
 #define PINO_MODO  4
-
-/**
- * Modo da câmera 
- * 
- * 1 & 2 = vídeo
- * 3 & 4 = foto
- * 
- * baixa e alta resolução, respectivamente.
- */
+#define INTERVALO_FOTO  60000 
 #define MODO_CAMERA 4
 
 boolean ligado;
 boolean onCam;
+long ultimaFoto;
 
 void setup() {
   Serial.begin(9600);
@@ -32,16 +25,23 @@ void setup() {
 
   ligado = false;
   onCam = false;
+  ultimaFoto = 0;
 }
 
 void loop() {
-  // ligando a camera
   startCam();
-
-  // tirando a foto e desligando
   tiraFoto();
 }
 
+/**
+ * Liga a câmera e coloca no modo correto
+ * definido em MODO_CAMERA.
+ * 
+ * Modos da câmera:
+ * 
+ * 1 & 2 = vídeo (baixa e alta resolução, respectivamente)
+ * 3 & 4 = foto (baixa e alta resolução, respectivamente)
+ */
 void startCam() {
   if (ligado == false) {
     Serial.println("ligando");
@@ -59,15 +59,16 @@ void startCam() {
       digitalWrite(PINO_MODO, LOW);
       delay(1000);
   
-      if (i == MODO_CAMERA) onCam = true;
+      if (i == MODO_CAMERA) {
+        onCam = true;
+        ligado = true;
+      }
     }
-
-    ligado = true;
   }
 }
 
 void tiraFoto() {
-  if (ligado == true && onCam == true) {
+  if (ligado == true && onCam == true && (millis() - ultimaFoto > INTERVALO_FOTO)) {
     Serial.println("tirando foto");
 
     digitalWrite(PINO_FOTO, HIGH);
@@ -76,17 +77,11 @@ void tiraFoto() {
     digitalWrite(PINO_FOTO, LOW);
     delay(1000);
 
-    // long delay
-    geraIntervalo();
-  }
-}
+    ultimaFoto = millis();
 
-void geraIntervalo() {
-  for (int t = 0; t <= 7; t++) {
-    Serial.print('.');
-    delay(8000);
+    Serial.println();
   }
-  
-  Serial.println();
+
+  Serial.print('.');
 }
 
